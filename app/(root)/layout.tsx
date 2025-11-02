@@ -10,8 +10,6 @@ import { cn } from "@shad-cn/lib/utils";
 
 
 export default function App_Layout({ children }: Props_Type_With_Children) {
-    const pathname = usePathname();
-    console.log('pathname', pathname);
     return (
         <div className="w-screen h-screen flex flex-col">
             <header className="p-4 border-b-2 flex flex-row justify-between items-center">

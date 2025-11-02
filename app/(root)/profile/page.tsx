@@ -12,6 +12,7 @@ import { api } from "@convex/_generated/api";
 import Image from "next/image";
 import { AspectRatio } from "@/shad-cn/components/ui/aspect-ratio";
 import Profile_Avatar from "@/components/general/profile-avatar";
+import { Badge } from "@/shad-cn/components/ui/badge";
 
 export default function Profile_Page() {
     return (
@@ -62,6 +63,13 @@ function Content() {
                     <div>Gender- {me.gender ?? ''}</div>
                     <div>about - {me.about ?? ''}</div>
                     <div>greeter - {me.greeter ?? ''}</div>
+                    <div>
+                        { me.identities && me.identities.map((item, i) => item.trim() && (
+                            <Badge key={i}>
+                                {item}
+                            </Badge>
+                        )) }
+                    </div>
                 </div>
             )}
         </div>
