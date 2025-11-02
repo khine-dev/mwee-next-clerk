@@ -23,7 +23,7 @@ export default function Protected_Layout({children} : Props_Type_With_Children) 
 
 function Auth_Form() {
     return (
-        <div className="flex flex-col gap-8 mx-auto">
+        <div className="w-full min-h-full flex flex-col justify-center items-stretch gap-5">
             <SignInButton mode="modal">
                 <Button>
                     Sign in

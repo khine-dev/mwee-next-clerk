@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useQuery } from "convex/react";
@@ -10,13 +11,14 @@ import { useState } from "react";
 import { Spinner } from "@/shad-cn/components/ui/spinner";
 import { useRouter } from "next/navigation";
 
+
 export default function Profile_Page() {
     const me = useQuery(api.users.get_me);
     const [show_img_modal, set_show_img_modal] = useState<boolean>(false);
     const toogle_modal = () => set_show_img_modal(old => !old);
     const router = useRouter();
     return (
-        <div className="w-full min-h-full">
+        <div className="w-full h-full">
             {me === undefined && (
                 <div className="w-full py-40 flex items-center justify-center">
                     <Spinner className="size-8" />
@@ -47,8 +49,8 @@ export default function Profile_Page() {
                     </div>
 
                     <div>
-                        <Button onClick={() => router.push('/profile/edit')} className="w-full" variant={'secondary'}>
-                            Edit Profile
+                        <Button onClick={() => router.push('/profile')} className="w-full" variant={'default'}>
+                            Save Profile
                         </Button>
                     </div>
 

@@ -16,10 +16,8 @@ export default function App_Layout({ children }: Props_Type_With_Children) {
                 Mwee
                 <UserButton />
             </header>
-            <main className="flex-1">
-                <ScrollArea className="w-full h-full p-4">
-                    {children}
-                </ScrollArea>
+            <main className="flex-1 w-full p-4 overflow-y-auto">
+                {children}
             </main>
             <footer className="p-4 flex justify-between items-center border-t-2">
                 <Icon_Button path="/">
