@@ -2,7 +2,7 @@ import { mutation, query } from "./_generated/server";
 import { v } from "convex/values";
 
 export const store = mutation({
-    args: {username: v.union(v.string(), v.null())},
+    args: {username: v.union(v.string(), v.null()), img: v.optional(v.string())},
     handler: async (ctx, args) => {
         const identity = await ctx.auth.getUserIdentity();
         if (!identity) return;
@@ -17,12 +17,16 @@ export const store = mutation({
             if (username && user.username !== username) {
                 await ctx.db.patch(user._id, { username });
             }
+            if(args.img && user.img !== args.img) {
+                await ctx.db.patch(user._id, { img: args.img });
+            }
             return user._id;
         }
 
         return await ctx.db.insert("users", {
             username: username ?? "Anonymous",
             identifier: identity.tokenIdentifier,
+            img: args.img ?? undefined
         });
     },
 

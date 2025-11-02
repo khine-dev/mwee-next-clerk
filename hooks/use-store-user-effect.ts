@@ -12,15 +12,16 @@ export function use_store_user_effect() {
     const store_user = useMutation(api.users.store);
     useEffect(() => {
         if(!isAuthenticated) return;
-        
+        console.log('image url changed'); 
+        console.log(user);
         async function update_user () {
             if(!user) return;
-            const id = await store_user({ username: user.username });
+            const id = await store_user({ username: user.username, img: user.imageUrl });
             set_user_id(id);
         }
         update_user();
         return () => set_user_id(null);
-    }, [isAuthenticated, store_user, user?.id, user?.username]);
+    }, [isAuthenticated, store_user, user?.id, user?.username, user?.imageUrl]);
 
     return {
         is_loading: isLoading || (isAuthenticated && user_id === null),
