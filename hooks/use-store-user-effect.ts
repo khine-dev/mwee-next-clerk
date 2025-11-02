@@ -10,6 +10,7 @@ export function use_store_user_effect() {
     const { user } = useUser();
     const [user_id, set_user_id] = useState<Id<"users"> | null>(null);
     const store_user = useMutation(api.users.store);
+    const generate_search_string = useMutation(api.users.generate_search_string);
     useEffect(() => {
         if(!isAuthenticated) return;
         async function update_user () {
@@ -18,6 +19,7 @@ export function use_store_user_effect() {
             set_user_id(id);
         }
         update_user();
+        generate_search_string();
         return () => set_user_id(null);
     }, [isAuthenticated, store_user, user?.id, user?.username, user?.imageUrl]);
 

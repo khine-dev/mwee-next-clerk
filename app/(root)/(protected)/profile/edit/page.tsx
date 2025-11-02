@@ -28,6 +28,7 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@shad-cn/components/ui/select";
+import { generate_search_string } from "@/convex/users";
 
 
 export default function Profile_Page() {
@@ -35,6 +36,7 @@ export default function Profile_Page() {
     const [user, set_user] = useState(me);
     const [loading, set_loading] = useState(false);
     const update_user = useMutation(api.users.update_profile);
+    const generate_search_string = useMutation(api.users.generate_search_string);
     const router = useRouter();
     const [new_identity, set_new_identity] = useState('');
 
@@ -180,6 +182,7 @@ export default function Profile_Page() {
                 identities: user.identities
             };
             await update_user(data);
+            await generate_search_string();
             toast.success("Successfully updated your profile");
             set_loading(false);
         } catch (e) {

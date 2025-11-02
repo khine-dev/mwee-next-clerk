@@ -32,6 +32,26 @@ export const store = mutation({
 
 });
 
+export const generate_search_string = mutation({
+    handler: async (ctx) => {
+        const identity = await ctx.auth.getUserIdentity();
+        if (!identity) return;
+        const user = await ctx.db
+            .query("users")
+            .withIndex("by_identifier", q => q.eq("identifier", identity.tokenIdentifier))
+            .unique()
+        ;
+        if(!user) return;
+        const search_string =
+            (user.username) +
+            (user.name ?? '') +
+            (user.identities?.join('') ?? '') +
+            (user.about ?? '')
+        ;
+        await ctx.db.patch(user._id, { search_string: search_string.toLowerCase() })
+    }
+})
+
 
 export const get_me = query({
     handler: async (ctx) => {
@@ -69,3 +89,28 @@ export const update_profile = mutation({
         await ctx.db.patch(user._id, args);
     }
 });
+
+export const get_user_with_id = query({
+    args: { id: v.id("users") },
+    handler: async (ctx, args) => {
+        const user = await ctx.db.get(args.id);
+        return user;
+    }
+});
+
+export const search_users = query({
+    args: {
+        keyword: v.optional(v.string()),
+        gender: v.optional(v.union(v.literal("male"), v.literal("female")))
+    },
+    handler: async (ctx, args) => {
+        if(args.keyword) {
+            return await ctx.db.query('users')
+                .withSearchIndex("with_search_string", (q) => q.search("search_string", args.keyword!.toLowerCase()))
+                .collect()
+            ;
+        }
+        return await ctx.db.query('users').collect();
+    }
+});
+
