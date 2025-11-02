@@ -1,7 +1,6 @@
 'use client';
 import React from "react"
 import { UserButton } from "@clerk/nextjs";
-import { ScrollArea } from "@shad-cn/components/ui/scroll-area";
 import { House, Search, MessageSquareHeart, User } from "lucide-react";
 import { Card } from "@shad-cn/components/ui/card";
 import { usePathname, useRouter } from "next/navigation";

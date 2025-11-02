@@ -9,6 +9,7 @@ import { Card } from "@/shad-cn/components/ui/card";
 import { useState } from "react";
 import { Spinner } from "@/shad-cn/components/ui/spinner";
 import { useRouter } from "next/navigation";
+import { cn } from "@/shad-cn/lib/utils";
 
 export default function Profile_Page() {
     const me = useQuery(api.users.get_me);
@@ -57,8 +58,8 @@ export default function Profile_Page() {
                             About
                         </div>
                         <Card className="p-3">
-                            <div className="w-full leading-relaxed text-justify">
-                                { me.about ?? '' }
+                            <div className={ cn("w-full leading-relaxed text-justify", me.about?.trim() ? '' : 'text-foreground/50') }>
+                                { me.about?.trim() || 'what u feeling??' }
                             </div>
                         </Card>
                     </div>
@@ -68,8 +69,8 @@ export default function Profile_Page() {
                             Greeter
                         </div>
                         <Card className="p-3">
-                            <div className="w-full leading-relaxed text-justify">
-                                { me.greeter ?? '' }
+                            <div className={cn("w-full leading-relaxed text-justify", me.greeter?.trim() ? '' : 'text-foreground/50') }>
+                                { me.greeter?.trim() || 'This is what other users will see as your first message when they initiate a conversation with you.' }
                             </div>
                         </Card>
                     </div>

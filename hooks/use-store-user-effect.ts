@@ -12,8 +12,6 @@ export function use_store_user_effect() {
     const store_user = useMutation(api.users.store);
     useEffect(() => {
         if(!isAuthenticated) return;
-        console.log('image url changed'); 
-        console.log(user);
         async function update_user () {
             if(!user) return;
             const id = await store_user({ username: user.username, img: user.imageUrl });

@@ -32,6 +32,7 @@ export const store = mutation({
 
 });
 
+
 export const get_me = query({
     handler: async (ctx) => {
         const identity = await ctx.auth.getUserIdentity();
@@ -43,4 +44,28 @@ export const get_me = query({
         ;
         return user;
     }
-})
+});
+
+export const update_profile = mutation({
+    args: {
+        name: v.optional(v.string()),
+        gender: v.optional(v.union(
+            v.literal('male'),
+            v.literal('female')
+        )),
+        about: v.optional(v.string()),
+        greeter: v.optional(v.string()),
+        identities: v.optional(v.array(v.string()))
+    },
+    handler: async (ctx, args) => {
+        const identity = await ctx.auth.getUserIdentity();
+        if(!identity) return null;
+        const user = await ctx.db
+            .query("users")
+            .withIndex("by_identifier", q => q.eq("identifier", identity.tokenIdentifier))
+            .unique()
+        ;
+        if(!user) return null;
+        await ctx.db.patch(user._id, args);
+    }
+});
