@@ -3,18 +3,15 @@
 import { useQuery } from "convex/react";
 import { Button } from "@shad-cn/components/ui/button";
 import { api } from "@convex/_generated/api";
-import {Profile_Avatar, Img_Modal} from "@/components/general/profile-avatar";
+import {Profile_Avatar} from "@/components/general/profile-avatar";
 import { Badge } from "@/shad-cn/components/ui/badge";
 import { Card } from "@/shad-cn/components/ui/card";
-import { useState } from "react";
 import { Spinner } from "@/shad-cn/components/ui/spinner";
 import { useRouter } from "next/navigation";
 import { cn } from "@/shad-cn/lib/utils";
 
 export default function Profile_Page() {
     const me = useQuery(api.users.get_me);
-    const [show_img_modal, set_show_img_modal] = useState<boolean>(false);
-    const toogle_modal = () => set_show_img_modal(old => !old);
     const router = useRouter();
     return (
         <div className="w-full min-h-full">
@@ -28,12 +25,10 @@ export default function Profile_Page() {
                 <div className="space-y-7">
                     <div className="flex items-start gap-4">
                         <Profile_Avatar
-                            toogle_modal={toogle_modal}
                             className="w-24"
                             src={me.img}
                             alt={me.username}
                         />
-                        { me.img && show_img_modal && <Img_Modal src={me.img} toogle_modal={toogle_modal} /> }
                         <div className="pt-2">
                             <div className="text-xl font-bold">{me.name?.trim() || me.username}</div>
                             <div>{me.gender ?? ''}</div>
