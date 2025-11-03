@@ -16,16 +16,19 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@shad-cn/components/ui/select"
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Gender_Type } from "@/types/general";
 import { usePaginatedQuery } from "convex/react";
+import { Profile_Avatar } from "@/components/general/profile-avatar";
+import { Badge } from "@/shad-cn/components/ui/badge";
+import { Card } from "@/shad-cn/components/ui/card";
 
 export default function Search_Page() {
 
     const [gender, set_gender] = useState<Gender_Type | 'all'>('all');
     const [keyword, set_keyword] = useState<string>('');
 
-    const [ search_params, set_search_params ] = useState<{
+    const [search_params, set_search_params] = useState<{
         keyword?: string;
         gender?: Gender_Type;
     } | null>(null);
@@ -37,7 +40,11 @@ export default function Search_Page() {
         });
     }
 
-    const { results : users, status, loadMore } = usePaginatedQuery(api.users.search_users, search_params || {} , { initialNumItems : 10 });
+    useEffect(() => {
+        handle_search();
+    }, [gender])
+
+    const { results: users, status, loadMore } = usePaginatedQuery(api.users.search_users, search_params || {}, { initialNumItems: 10 });
 
     return (
         <>
@@ -47,17 +54,22 @@ export default function Search_Page() {
             {users && (
                 <div>
                     <div className="flex items-center gap-2">
-                        <InputGroup className="flex-1">
-                            <InputGroupInput
-                                onChange={e => set_keyword(e.target.value)}
-                                placeholder="Search..."
-                            />
-                            <InputGroupAddon align="inline-end">
-                                <InputGroupButton onClick={ handle_search }>
-                                    <Search />
-                                </InputGroupButton>
-                            </InputGroupAddon>
-                        </InputGroup>
+                        <form
+                            onSubmit={(e) => {e.preventDefault(); handle_search();}}
+                            className="flex-1"
+                        >
+                            <InputGroup className="w-full">
+                                <InputGroupInput
+                                    onChange={e => set_keyword(e.target.value)}
+                                    placeholder="Search..."
+                                />
+                                <InputGroupAddon align="inline-end">
+                                    <InputGroupButton type="submit">
+                                        <Search />
+                                    </InputGroupButton>
+                                </InputGroupAddon>
+                            </InputGroup>
+                        </form>
                         <Select onValueChange={val => set_gender(val as Gender_Type | 'all')}>
                             <SelectTrigger className="border-none">
                                 <SelectValue placeholder="Gender" />
@@ -71,11 +83,39 @@ export default function Search_Page() {
                             </SelectContent>
                         </Select>
                     </div>
-                    {users.map(item => (
-                        <div key={item._id}>
-                            {item.name ?? item.username}
-                        </div>
-                    ))}
+                    <div className="space-y-5 py-4">
+                        {users.map(item => (
+                            <Card key={item._id} className="p-0">
+                                <div
+                                    onClick={(e) => {
+                                        console.log('noono');
+                                    }}
+                                    className="p-2"
+                                    key={item._id}
+                                >
+                                    <div className="flex items-start gap-4">
+                                        <Profile_Avatar
+                                            className="w-20"
+                                            src={item.img}
+                                            alt={item.username}
+                                            open_image={false}
+                                        />
+                                        <div className="pt-1">
+                                            <div className="text-xl font-bold">{item.name?.trim() || item.username}</div>
+                                            <div>{item.gender ?? ''}</div>
+                                            <div className="flex items-center flex-wrap gap-2">
+                                                {item.identities && item.identities.map((item, i) => item.trim() && (
+                                                    <Badge key={i}>
+                                                        {item}
+                                                    </Badge>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </Card>
+                        ))}
+                    </div>
                 </div>
             )}
         </>

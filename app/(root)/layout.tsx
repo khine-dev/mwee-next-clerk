@@ -1,5 +1,5 @@
 'use client';
-import React from "react"
+import React, { useEffect } from "react"
 import { UserButton } from "@clerk/nextjs";
 import { House, Search, MessageSquareHeart, User } from "lucide-react";
 import { Card } from "@shad-cn/components/ui/card";
@@ -44,6 +44,9 @@ function Icon_Button({ children, path }: Icon_Button_Props) {
     const router = useRouter();
     const pathname = usePathname();
     const is_active = path === pathname;
+    useEffect(() => {
+        router.prefetch(path);
+    }, [path])
     return (
         <Card onClick={() => router.push(path)} className={cn('w-fit', 'h-fit', 'p-3', 'cursor-pointer', !is_active ? 'bg-accent-foreground' : '')}>
             {children}
