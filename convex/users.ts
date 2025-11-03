@@ -1,5 +1,7 @@
+import { OrderedQuery, paginationOptsValidator  } from "convex/server";
 import { mutation, query } from "./_generated/server";
 import { v } from "convex/values";
+import { DataModel } from "./_generated/dataModel";
 
 export const store = mutation({
     args: {username: v.union(v.string(), v.null()), img: v.optional(v.string())},
@@ -101,16 +103,25 @@ export const get_user_with_id = query({
 export const search_users = query({
     args: {
         keyword: v.optional(v.string()),
-        gender: v.optional(v.union(v.literal("male"), v.literal("female")))
+        gender: v.optional(v.union(v.literal("male"), v.literal("female"))),
+        paginationOpts: paginationOptsValidator
     },
     handler: async (ctx, args) => {
+
+        const base_q  = ctx.db.query('users');;
+        let final_query: OrderedQuery<DataModel['users']> = ctx.db.query('users');;
         if(args.keyword) {
-            return await ctx.db.query('users')
-                .withSearchIndex("with_search_string", (q) => q.search("search_string", args.keyword!.toLowerCase()))
-                .collect()
-            ;
+            final_query = base_q.withSearchIndex("with_search_string", (q) => q.search("search_string", args.keyword!.toLowerCase()))
+            if(args.gender) {
+                final_query = final_query.filter(q => q.eq(q.field('gender'), args.gender))
+            }
         }
-        return await ctx.db.query('users').collect();
+        if(args.gender) {
+            final_query = final_query.filter(q => q.eq(q.field('gender'), args.gender))
+        }
+        return await final_query
+            .filter(q => q.neq(q.field('gender'), undefined))
+            .paginate(args.paginationOpts);
     }
 });
 

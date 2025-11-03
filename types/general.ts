@@ -5,3 +5,5 @@ export type Props_Type_With_Children = Readonly<{
 }>
 
 export type With_Clildren_And<T> = Readonly<Props_Type_With_Children & T>;
+
+export type Gender_Type = 'male' | 'female';
