@@ -7,7 +7,7 @@ import { useAuth } from "@clerk/nextjs";
 import { use_store_user_effect } from "@/hooks/use-store-user-effect";
 const convex = new ConvexReactClient(process.env.NEXT_PUBLIC_CONVEX_URL!);
 
-export default function ConvexClientProvider({
+export default function Convex_Client_Provider({
     children,
 }: {
     children: ReactNode;
