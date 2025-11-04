@@ -92,13 +92,13 @@ export const update_profile = mutation({
     }
 });
 
-export const get_user_with_id = query({
-    args: { id: v.id("users") },
+
+export const get_user_with_username = query({
+    args: { username: v.string() },
     handler: async (ctx, args) => {
-        const user = await ctx.db.get(args.id);
-        return user;
+        return await ctx.db.query("users").withIndex("by_username", q => q.eq("username", args.username)).unique();
     }
-});
+})
 
 export const search_users = query({
     args: {

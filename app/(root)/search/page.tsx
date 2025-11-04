@@ -22,11 +22,13 @@ import { usePaginatedQuery } from "convex/react";
 import { Profile_Avatar } from "@/components/general/profile-avatar";
 import { Badge } from "@/shad-cn/components/ui/badge";
 import { Card } from "@/shad-cn/components/ui/card";
+import { useRouter } from "next/navigation";
 
 export default function Search_Page() {
 
     const [gender, set_gender] = useState<Gender_Type | 'all'>('all');
     const [keyword, set_keyword] = useState<string>('');
+    const router = useRouter();
 
     const [search_params, set_search_params] = useState<{
         keyword?: string;
@@ -87,7 +89,8 @@ export default function Search_Page() {
                         {users.map(item => (
                             <Card key={item._id} className="p-0">
                                 <div
-                                    onClick={(e) => {
+                                    onClick={() => {
+                                        router.push(`/users/${item.username}`)
                                         console.log('noono');
                                     }}
                                     className="p-2"

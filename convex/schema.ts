@@ -15,5 +15,8 @@ export default defineSchema({
         greeter: v.optional(v.string()),
         identities: v.optional(v.array(v.string())),
         search_string: v.optional(v.string())
-    }).index("by_identifier", ["identifier"]).searchIndex("with_search_string", { searchField : 'search_string' })
+    })
+    .index("by_identifier", ["identifier"])
+    .index("by_username", ["username"])
+    .searchIndex("with_search_string", { searchField : 'search_string' })
 });
