@@ -23,6 +23,7 @@ import { Profile_Avatar } from "@/components/general/profile-avatar";
 import { Badge } from "@/shad-cn/components/ui/badge";
 import { Card } from "@/shad-cn/components/ui/card";
 import { useRouter } from "next/navigation";
+import { Spinner } from "@/shad-cn/components/ui/spinner";
 
 export default function Search_Page() {
 
@@ -50,75 +51,75 @@ export default function Search_Page() {
 
     return (
         <>
+            <div className="flex items-center gap-2">
+                <form
+                    onSubmit={(e) => { e.preventDefault(); handle_search(); }}
+                    className="flex-1"
+                >
+                    <InputGroup className="w-full">
+                        <InputGroupInput
+                            onChange={e => set_keyword(e.target.value)}
+                            placeholder="Search..."
+                        />
+                        <InputGroupAddon align="inline-end">
+                            <InputGroupButton type="submit">
+                                <Search />
+                            </InputGroupButton>
+                        </InputGroupAddon>
+                    </InputGroup>
+                </form>
+                <Select onValueChange={val => set_gender(val as Gender_Type | 'all')}>
+                    <SelectTrigger className="border-none">
+                        <SelectValue placeholder="Gender" />
+                    </SelectTrigger>
+                    <SelectContent>
+                        <SelectGroup>
+                            <SelectItem value="all">All</SelectItem>
+                            <SelectItem value="male">Male</SelectItem>
+                            <SelectItem value="female">Female</SelectItem>
+                        </SelectGroup>
+                    </SelectContent>
+                </Select>
+            </div>
             {status === 'LoadingFirstPage' && (
-                <div>Loading..</div>
+                <div className="grid place-content-center h-36">
+                    <Spinner />
+                </div>
             )}
             {users && (
-                <div>
-                    <div className="flex items-center gap-2">
-                        <form
-                            onSubmit={(e) => {e.preventDefault(); handle_search();}}
-                            className="flex-1"
-                        >
-                            <InputGroup className="w-full">
-                                <InputGroupInput
-                                    onChange={e => set_keyword(e.target.value)}
-                                    placeholder="Search..."
-                                />
-                                <InputGroupAddon align="inline-end">
-                                    <InputGroupButton type="submit">
-                                        <Search />
-                                    </InputGroupButton>
-                                </InputGroupAddon>
-                            </InputGroup>
-                        </form>
-                        <Select onValueChange={val => set_gender(val as Gender_Type | 'all')}>
-                            <SelectTrigger className="border-none">
-                                <SelectValue placeholder="Gender" />
-                            </SelectTrigger>
-                            <SelectContent>
-                                <SelectGroup>
-                                    <SelectItem value="all">All</SelectItem>
-                                    <SelectItem value="male">Male</SelectItem>
-                                    <SelectItem value="female">Female</SelectItem>
-                                </SelectGroup>
-                            </SelectContent>
-                        </Select>
-                    </div>
-                    <div className="space-y-5 py-4">
-                        {users.map(item => (
-                            <Card key={item._id} className="p-0">
-                                <div
-                                    onClick={() => {
-                                        router.push(`/users/${item.username}`)
-                                        console.log('noono');
-                                    }}
-                                    className="p-2"
-                                    key={item._id}
-                                >
-                                    <div className="flex items-start gap-4">
-                                        <Profile_Avatar
-                                            className="w-20"
-                                            src={item.img}
-                                            alt={item.username}
-                                            open_image={false}
-                                        />
-                                        <div className="pt-1">
-                                            <div className="text-xl font-bold">{item.name?.trim() || item.username}</div>
-                                            <div>{item.gender ?? ''}</div>
-                                            <div className="flex items-center flex-wrap gap-2">
-                                                {item.identities && item.identities.map((item, i) => item.trim() && (
-                                                    <Badge key={i}>
-                                                        {item}
-                                                    </Badge>
-                                                ))}
-                                            </div>
+                <div className="space-y-5 py-4">
+                    {users.map(item => (
+                        <Card key={item._id} className="p-0 cursor-pointer">
+                            <div
+                                onClick={() => {
+                                    router.push(`/users/${item.username}`)
+                                    console.log('noono');
+                                }}
+                                className="p-2"
+                                key={item._id}
+                            >
+                                <div className="flex items-start gap-4">
+                                    <Profile_Avatar
+                                        className="w-20"
+                                        src={item.img}
+                                        alt={item.username}
+                                        open_image={false}
+                                    />
+                                    <div className="pt-1">
+                                        <div className="text-xl font-bold">{item.name?.trim() || item.username}</div>
+                                        <div>{item.gender ?? ''}</div>
+                                        <div className="flex items-center flex-wrap gap-2">
+                                            {item.identities && item.identities.map((item, i) => item.trim() && (
+                                                <Badge key={i}>
+                                                    {item}
+                                                </Badge>
+                                            ))}
                                         </div>
                                     </div>
                                 </div>
-                            </Card>
-                        ))}
-                    </div>
+                            </div>
+                        </Card>
+                    ))}
                 </div>
             )}
         </>
