@@ -8,7 +8,6 @@ import { Profile_Avatar } from "@/components/general/profile-avatar";
 import { Badge } from "@/shad-cn/components/ui/badge";
 import { Card } from "@/shad-cn/components/ui/card";
 import { Spinner } from "@/shad-cn/components/ui/spinner";
-import { useRouter } from "next/navigation";
 import { cn } from "@/shad-cn/lib/utils";
 
 export default function User_Page() {
