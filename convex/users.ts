@@ -45,9 +45,12 @@ export const generate_search_string = mutation({
         ;
         if(!user) return;
         const search_string =
-            (user.username) +
+            (user.username) + 
+            ' ' +
             (user.name ?? '') +
-            (user.identities?.join('') ?? '') +
+            ' ' +
+            (user.identities?.join(' ') ?? '') +
+            ' ' +
             (user.about ?? '')
         ;
         await ctx.db.patch(user._id, { search_string: search_string.toLowerCase() })
@@ -111,7 +114,7 @@ export const search_users = query({
         const base_q  = ctx.db.query('users');;
         let final_query: OrderedQuery<DataModel['users']> = ctx.db.query('users');;
         if(args.keyword) {
-            final_query = base_q.withSearchIndex("with_search_string", (q) => q.search("search_string", args.keyword!.toLowerCase()))
+            final_query = base_q.withSearchIndex("with_search_string", (q) => q.search("search_string", args.keyword!.toLowerCase().trim()))
             if(args.gender) {
                 final_query = final_query.filter(q => q.eq(q.field('gender'), args.gender))
             }

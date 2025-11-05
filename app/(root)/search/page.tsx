@@ -16,7 +16,7 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@shad-cn/components/ui/select"
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Gender_Type } from "@/types/general";
 import { usePaginatedQuery } from "convex/react";
 import { Profile_Avatar } from "@/components/general/profile-avatar";
@@ -24,12 +24,14 @@ import { Badge } from "@/shad-cn/components/ui/badge";
 import { Card } from "@/shad-cn/components/ui/card";
 import { useRouter } from "next/navigation";
 import { Spinner } from "@/shad-cn/components/ui/spinner";
+import { Auth_Context } from "@/contexts/auth-context-provider";
 
 export default function Search_Page() {
 
     const [gender, set_gender] = useState<Gender_Type | 'all'>('all');
     const [keyword, set_keyword] = useState<string>('');
     const router = useRouter();
+    const auth_context = useContext(Auth_Context);
 
     const [search_params, set_search_params] = useState<{
         keyword?: string;
@@ -89,6 +91,7 @@ export default function Search_Page() {
             {users && (
                 <div className="space-y-5 py-4">
                     {users.map(item => (
+                        item._id !== auth_context.user_id &&
                         <Card key={item._id} className="p-0 cursor-pointer">
                             <div
                                 onClick={() => {
