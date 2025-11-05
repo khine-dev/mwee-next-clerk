@@ -4,6 +4,7 @@ import "./globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
 import { Theme_Provider } from "@/shad-cn/theme-provider";
 import Convex_Client_Provider from "@/contexts/convex-client-provider";
+import { Auth_Context_Provider } from "@/contexts/auth-context-provider";
 
 const geistSans = Geist({
     variable: "--font-geist-sans",
@@ -35,14 +36,16 @@ export default function RootLayout({
             >
                 <ClerkProvider dynamic>
                     <Convex_Client_Provider>
-                        <Theme_Provider
-                            attribute="class"
-                            defaultTheme="dark"
-                            enableSystem
-                            disableTransitionOnChange
-                        >
-                            {children}
-                        </Theme_Provider>
+                        <Auth_Context_Provider>
+                            <Theme_Provider
+                                attribute="class"
+                                defaultTheme="dark"
+                                enableSystem
+                                disableTransitionOnChange
+                            >
+                                {children}
+                            </Theme_Provider>
+                        </Auth_Context_Provider>
                     </Convex_Client_Provider>
                 </ClerkProvider>
             </body>
