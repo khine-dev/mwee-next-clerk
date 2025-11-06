@@ -8,6 +8,7 @@
  * @module
  */
 
+import type * as direct_messages from "../direct_messages.js";
 import type * as users from "../users.js";
 
 import type {
@@ -25,6 +26,7 @@ import type {
  * ```
  */
 declare const fullApi: ApiFromModules<{
+  direct_messages: typeof direct_messages;
   users: typeof users;
 }>;
 declare const fullApiWithMounts: typeof fullApi;
