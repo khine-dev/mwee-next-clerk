@@ -2,7 +2,7 @@
 
 import { api } from "@/convex/_generated/api";
 import { useQuery } from "convex/react";
-import { useParams } from 'next/navigation'
+import { useParams, useRouter } from 'next/navigation'
 import { Button } from "@shad-cn/components/ui/button";
 import { Profile_Avatar } from "@/components/general/profile-avatar";
 import { Badge } from "@/shad-cn/components/ui/badge";
@@ -13,6 +13,7 @@ import { cn } from "@/shad-cn/lib/utils";
 export default function User_Page() {
     const { username } = useParams<{ username: string }>();
     const user = useQuery(api.users.get_user_with_username, { username });
+    const router = useRouter();
 
     if (user === undefined) return (
         <div className="grid place-content-center h-36">
@@ -48,7 +49,7 @@ export default function User_Page() {
             </div>
 
             <div className="grid px-4">
-                <Button variant={'destructive'} className="text-wrap">
+                <Button onClick={() => router.push(`/chat/${user.username}`)} variant={'destructive'} className="text-wrap">
                     Chat with {' '}{ user.name?.trim() || user.username }
                 </Button>
             </div>
