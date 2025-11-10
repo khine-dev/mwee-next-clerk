@@ -25,7 +25,7 @@ export default function Chat_Page() {
 
     return (
         <div className="flex h-full flex-col">
-            <Message_List other_user_id={other_user._id} />
+            <Message_List other_user={other_user} />
             <Message_Input receiver_id={other_user._id} />
         </div>
     );

@@ -20,6 +20,23 @@ export const send_message = mutation({
 
         const conversation_id = [sender._id, args.receiver_id].sort().join('_');
 
+        const existing_message = await ctx.db.query("direct_messages")
+            .withIndex("by_conversation_id", q => q.eq("conversation_id", conversation_id))
+            .first();
+
+        if (!existing_message) {
+            const receiver = await ctx.db.get(args.receiver_id);
+            if (receiver && receiver.greeter) {
+                await ctx.db.insert("direct_messages", {
+                    sender_id: receiver._id,
+                    receiver_id: sender._id,
+                    content: receiver.greeter,
+                    read: false,
+                    conversation_id
+                });
+            }
+        }
+
         const message_id = await ctx.db.insert("direct_messages", {
             sender_id: sender._id,
             receiver_id: args.receiver_id,

@@ -23,13 +23,18 @@ export default function Conversations_Page() {
     }
 
     return (
-        <div className="space-y-4">
-            {conversations?.map((conversation) => (
-                <div key={conversation._id} onClick={() => router.push(`/chat/${conversation.other_user.username}`)} className="p-2 border rounded-lg cursor-pointer flex items-center gap-4">
+        <div className="space-y-4 p-4">
+            {conversations?.map((conversation) =>
+                conversation.other_user && (
+                <div
+                    key={conversation._id}
+                    onClick={() => router.push(`/chat/${conversation.other_user?.username}`)}
+                    className="p-2 border rounded-lg cursor-pointer flex items-center gap-4 w-full"
+                >
                     <Profile_Avatar src={conversation.other_user.img} alt={conversation.other_user.username} className="w-12 h-12" />
-                    <div>
+                    <div className="flex-1">
                         <div className="font-bold">{conversation.other_user.name || conversation.other_user.username}</div>
-                        <div className="text-sm text-gray-500 truncate">{conversation.last_message?.content}</div>
+                        <div className="text-sm text-gray-500 text-wrap">{conversation.last_message?.content}</div>
                     </div>
                 </div>
             ))}

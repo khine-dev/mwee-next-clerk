@@ -65,3 +65,15 @@ This log summarizes the development process for implementing the one-on-one chat
     - Modified `app/(root)/(protected)/chat/layout.tsx` to include a dynamic header. This header now features a back button for navigation and displays the other user's avatar and name (fetched via Convex query) when on an individual chat page (`/chat/[username]`). For the main chat list page (`/chat`), it displays a generic "Chat" title.
     - Removed the redundant `User_Header` component from `app/(root)/(protected)/chat/[username]/page.tsx`, as its functionality was absorbed by the dynamic chat layout header.
     - Deleted the now unused `components/chat/user-header.tsx` file to maintain a clean codebase.
+
+### 5. Greeter Message Feature
+
+- **Objective:** To display a "greeter" message from the other user as the first message in a new conversation (no existing messages), both visually on the frontend and persistently in the database upon the user's first message.
+- **Frontend Implementation:**
+    - Modified `app/(root)/(protected)/chat/[username]/page.tsx` to pass the full `other_user` object to the `Message_List` component.
+    - Updated `components/chat/message-list.tsx` to accept the `other_user` object. If the conversation has no existing messages and `other_user.greeter` is defined, a `Message_Bubble` is rendered with the greeter content, attributed to the other user.
+- **Backend Implementation:**
+    - Modified the `send_message` mutation in `convex/direct_messages.ts`.
+    - Before inserting the user's message, the mutation now checks if it's the first message in the conversation.
+    - If it is the first message and the receiver has a `greeter` field, the greeter message is inserted into the `direct_messages` table, attributed to the receiver.
+    - The user's actual message is then inserted, and its ID is used to update the `last_message_id` in the `conversations` table.
