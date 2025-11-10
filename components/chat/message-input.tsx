@@ -4,9 +4,10 @@ import { api } from "@/convex/_generated/api";
 import { Id } from "@/convex/_generated/dataModel";
 import { useMutation } from "convex/react";
 import { useState } from "react";
-import { Textarea } from "@/shad-cn/components/ui/textarea";
+import { Input } from "@/shad-cn/components/ui/input";
 import { Button } from "@/shad-cn/components/ui/button";
 import { toast } from "sonner";
+import { Send } from "lucide-react";
 
 export function Message_Input({ receiver_id }: { receiver_id: Id<"users"> }) {
     const [message, setMessage] = useState("");
@@ -26,19 +27,15 @@ export function Message_Input({ receiver_id }: { receiver_id: Id<"users"> }) {
 
     return (
         <form onSubmit={handleSubmit} className="p-4 border-t flex items-center gap-2">
-            <Textarea
+            <Input
                 value={message}
                 onChange={(e) => setMessage(e.target.value)}
                 placeholder="Type a message..."
                 className="flex-1"
-                onKeyDown={(e) => {
-                    if (e.key === "Enter" && !e.shiftKey) {
-                        e.preventDefault();
-                        handleSubmit(e);
-                    }
-                }}
             />
-            <Button type="submit">Send</Button>
+            <Button type="submit" size="icon" variant="ghost">
+                <Send className="w-5 h-5" />
+            </Button>
         </form>
     );
 }
