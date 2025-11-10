@@ -50,3 +50,13 @@ This log summarizes the development process for implementing the one-on-one chat
 - **Message Order:** We identified and fixed a bug where new messages were appearing at the top of the chat instead of the bottom. This was resolved by:
     1.  Changing the `get_messages` query in the backend to sort messages in `asc` (ascending) order.
     2.  Reversing the message array on the frontend in the `message-list.tsx` component to ensure correct visual order.
+
+### 4. Chat Page Design and Layout Improvements
+
+- **Initial Assessment:** The chat page design was initially basic, with minimal styling for message bubbles, and issues with overall layout and scrolling behavior.
+- **Message Bubble Component:** Created `components/chat/message-bubble.tsx` to encapsulate message styling, differentiate sender/receiver, and display timestamps.
+- **Message Input Redesign:** Redesigned `components/chat/message-input.tsx` to be more compact, replacing the `Textarea` with an `Input` and a text button with an icon button using `lucide-react`.
+- **Message List Refactoring (Order & Scrolling):**
+    - Initially attempted to use `flex-col-reverse` in `components/chat/message-list.tsx` to handle message order, but this led to incorrect scrolling behavior.
+    - Reverted to using `flex-col` and `[...results].reverse().map()` for message rendering, combined with a `useEffect` hook to ensure the message list scrolls to the bottom on new messages. This approach, previously established, correctly handles message order and scrolling for paginated results.
+- **Layout Scrolling Fix:** Addressed a critical scrolling issue where the entire page scrolled instead of just the message list. This was resolved by modifying `app/(root)/(protected)/chat/layout.tsx` to be a full-height flex container (`h-full flex flex-col`), ensuring the chat components are correctly constrained within the viewport and the message input remains visible.
