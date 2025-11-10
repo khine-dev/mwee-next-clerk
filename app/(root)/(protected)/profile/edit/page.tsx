@@ -28,7 +28,6 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@shad-cn/components/ui/select";
-import { generate_search_string } from "@/convex/users";
 
 
 export default function Profile_Page() {
@@ -116,7 +115,7 @@ export default function Profile_Page() {
                                     <div className="grid gap-2">
                                         <Label>Gender</Label>
                                         <div className="text-xs text-foreground/50">
-                                            please note that you won't appear in search results if you do not select a gender.
+                                            please note that you will not appear in search results if you do not select a gender.
                                         </div>
                                         <Select
                                             value={user.gender}
@@ -186,6 +185,7 @@ export default function Profile_Page() {
             toast.success("Successfully updated your profile");
             set_loading(false);
         } catch (e) {
+            console.error("Error updating profile:", e);
             toast.error("Unexpected error occurred");
         }
     }

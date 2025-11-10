@@ -77,3 +77,13 @@ This log summarizes the development process for implementing the one-on-one chat
     - Before inserting the user's message, the mutation now checks if it's the first message in the conversation.
     - If it is the first message and the receiver has a `greeter` field, the greeter message is inserted into the `direct_messages` table, attributed to the receiver.
     - The user's actual message is then inserted, and its ID is used to update the `last_message_id` in the `conversations` table.
+
+### 6. Search Page Improvements & Bug Fixes
+
+- **Search Functionality Fix:** Corrected an issue in `app/(root)/search/page.tsx` where the `handle_search` function, due to incorrect `useMemo` usage, was not capturing the latest `keyword` and `gender` values. This was resolved by replacing `useMemo` with `useCallback` and providing the correct dependencies (`keyword`, `gender`).
+- **Debounced Search Input:** Implemented debouncing for the search input to improve performance and user experience.
+    - Created a new `useDebounce` hook in `hooks/use-debounce.ts`.
+    - Refactored `app/(root)/search/page.tsx` to use `useDebounce` for the `keyword` state.
+    - Removed the manual `handle_search` function and the explicit search button.
+    - Implemented a `useEffect` to automatically trigger searches when the debounced `keyword` or `gender` changes, providing a "search-as-you-type" experience.
+- **Unused Variable Fix:** Resolved an ESLint warning in `app/(root)/(protected)/profile/edit/page.tsx` where the `e` variable in a `catch` block was unused. The fix involved adding `console.error("Error updating profile:", e);` to the `catch` block for debugging purposes.

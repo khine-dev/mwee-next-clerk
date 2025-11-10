@@ -4,7 +4,6 @@ import { api } from "@/convex/_generated/api";
 import {
     InputGroup,
     InputGroupAddon,
-    InputGroupButton,
     InputGroupInput,
 } from "@shad-cn/components/ui/input-group"
 import { Search } from "lucide-react";
@@ -25,11 +24,14 @@ import { Card } from "@/shad-cn/components/ui/card";
 import { useRouter } from "next/navigation";
 import { Spinner } from "@/shad-cn/components/ui/spinner";
 import { Auth_Context } from "@/contexts/auth-context-provider";
+import { useDebounce } from "@/hooks/use-debounce";
 
 export default function Search_Page() {
 
     const [gender, set_gender] = useState<Gender_Type | 'all'>('all');
     const [keyword, set_keyword] = useState<string>('');
+    const debouncedKeyword = useDebounce(keyword, 300);
+
     const router = useRouter();
     const auth_context = useContext(Auth_Context);
 
@@ -38,38 +40,27 @@ export default function Search_Page() {
         gender?: Gender_Type;
     } | null>(null);
 
-    const handle_search = () => {
+    useEffect(() => {
         set_search_params({
-            keyword,
+            keyword: debouncedKeyword,
             gender: gender === 'all' ? undefined : gender
         });
-    }
+    }, [debouncedKeyword, gender]);
 
-    useEffect(() => {
-        handle_search();
-    }, [gender])
-
-    const { results: users, status, loadMore } = usePaginatedQuery(api.users.search_users, search_params || {}, { initialNumItems: 10 });
+    const { results: users, status } = usePaginatedQuery(api.users.search_users, search_params || {}, { initialNumItems: 10 });
 
     return (
         <>
             <div className="flex items-center gap-2">
-                <form
-                    onSubmit={(e) => { e.preventDefault(); handle_search(); }}
-                    className="flex-1"
-                >
-                    <InputGroup className="w-full">
-                        <InputGroupInput
-                            onChange={e => set_keyword(e.target.value)}
-                            placeholder="Search..."
-                        />
-                        <InputGroupAddon align="inline-end">
-                            <InputGroupButton type="submit">
-                                <Search />
-                            </InputGroupButton>
-                        </InputGroupAddon>
-                    </InputGroup>
-                </form>
+                <InputGroup className="w-full">
+                    <InputGroupInput
+                        onChange={e => set_keyword(e.target.value)}
+                        placeholder="Search..."
+                    />
+                    <InputGroupAddon align="inline-end">
+                        <Search />
+                    </InputGroupAddon>
+                </InputGroup>
                 <Select onValueChange={val => set_gender(val as Gender_Type | 'all')}>
                     <SelectTrigger className="border-none">
                         <SelectValue placeholder="Gender" />

@@ -20,7 +20,8 @@ export function Message_Input({ receiver_id }: { receiver_id: Id<"users"> }) {
         try {
             await sendMessage({ receiver_id, content: message });
             setMessage("");
-        } catch (error) {
+        } catch (e) {
+            console.log(e);
             toast.error("Failed to send message");
         }
     };
