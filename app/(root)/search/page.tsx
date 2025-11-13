@@ -80,7 +80,12 @@ export default function Search_Page() {
                     <Spinner />
                 </div>
             )}
-            {users && (
+            {status !== 'LoadingFirstPage' && users && (users.length < 1) && (
+                <div className="py-4">
+                    No users found
+                </div>
+            )}
+            {status !== 'LoadingFirstPage' && users && (users.length > 0) && (
                 <div className="space-y-5 py-4">
                     {users.map(item => (
                         item._id !== auth_context.user_id &&

@@ -7,7 +7,6 @@ import { useParams, usePathname, useRouter } from "next/navigation";
 import { Props_Type_With_Children, With_Clildren_And } from "@/types/general";
 import { cn } from "@shad-cn/lib/utils";
 import Image from "next/image";
-import { Button } from "@/shad-cn/components/ui/button";
 import { ChevronLeft } from "lucide-react";
 import { useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
