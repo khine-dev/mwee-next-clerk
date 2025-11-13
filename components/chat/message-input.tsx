@@ -27,7 +27,7 @@ export function Message_Input({ receiver_id }: { receiver_id: Id<"users"> }) {
     };
 
     return (
-        <form onSubmit={handleSubmit} className="p-4 border-t flex items-center gap-2">
+        <form onSubmit={handleSubmit} className="py-4 border-t flex items-center gap-2">
             <Input
                 value={message}
                 onChange={(e) => setMessage(e.target.value)}

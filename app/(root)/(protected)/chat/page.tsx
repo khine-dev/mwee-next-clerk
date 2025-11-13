@@ -24,7 +24,7 @@ export default function Conversations_Page() {
     }
 
     return (
-        <div className="space-y-4 p-4">
+        <div className="space-y-4">
             {conversations?.map((conversation) =>
                 conversation.other_user && (
                 <div

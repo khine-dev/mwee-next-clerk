@@ -42,7 +42,7 @@ export function Message_List({ other_user }: { other_user: Doc<"users"> }) {
     const show_greeter = results.length === 0 && other_user.greeter;
 
     return (
-        <div ref={listRef} className="flex-1 overflow-y-auto p-4 space-y-4">
+        <div ref={listRef} className="flex-1 overflow-y-auto space-y-4 py-4">
             <div ref={ref} className="h-1" />
             <div className="flex flex-col-reverse gap-4">
                 {show_greeter && (
