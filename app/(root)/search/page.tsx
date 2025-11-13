@@ -15,6 +15,7 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@shad-cn/components/ui/select"
+import { Button } from "@shad-cn/components/ui/button";
 import { useContext, useEffect, useState } from "react";
 import { Gender_Type } from "@/types/general";
 import { usePaginatedQuery } from "convex/react";
@@ -47,7 +48,7 @@ export default function Search_Page() {
         });
     }, [debouncedKeyword, gender]);
 
-    const { results: users, status } = usePaginatedQuery(api.users.search_users, search_params || {}, { initialNumItems: 10 });
+    const { results: users, status, loadMore } = usePaginatedQuery(api.users.search_users, search_params || {}, { initialNumItems: 10 });
 
     return (
         <>
@@ -87,7 +88,6 @@ export default function Search_Page() {
                             <div
                                 onClick={() => {
                                     router.push(`/users/${item.username}`)
-                                    console.log('noono');
                                 }}
                                 className="p-2"
                                 key={item._id}
@@ -114,6 +114,23 @@ export default function Search_Page() {
                             </div>
                         </Card>
                     ))}
+                    {status === 'CanLoadMore' && (
+                        <Button
+                            onClick={() => loadMore(10)}
+                            className="w-full"
+                        >
+                            Load More
+                        </Button>
+                    )}
+                    {status === 'LoadingMore' && (
+                        <Button
+                            disabled
+                            className="w-full"
+                        >
+                            <Spinner />
+                        </Button>
+                    )}
+                    {status === 'Exhausted' && <p className="text-center text-gray-500">No more results</p>}
                 </div>
             )}
         </>
