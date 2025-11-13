@@ -6,6 +6,7 @@ import { Card } from "@shad-cn/components/ui/card";
 import { usePathname, useRouter } from "next/navigation";
 import { Props_Type_With_Children, With_Clildren_And } from "@/types/general";
 import { cn } from "@shad-cn/lib/utils";
+import Image from "next/image";
 
 
 export default function App_Layout({ children }: Props_Type_With_Children) {
@@ -20,7 +21,7 @@ export default function App_Layout({ children }: Props_Type_With_Children) {
             <div className="w-full h-full max-w-3xl flex flex-col mx-auto">
                 {show_header_and_footer && (
                     <header className="p-4 border-b-2 flex flex-row justify-between items-center">
-                        Mwee
+                        <Image src={'/icon.svg'} width={40} alt="Mwee" height={40} />
                         <UserButton />
                     </header>
                 )}
