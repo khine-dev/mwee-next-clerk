@@ -5,9 +5,10 @@ import { usePaginatedQuery } from "convex/react";
 import { Spinner } from "@/shad-cn/components/ui/spinner";
 import { Profile_Avatar } from "@/components/general/profile-avatar";
 import { useRouter } from "next/navigation";
+import { Button } from "@shad-cn/components/ui/button";
 
 export default function Conversations_Page() {
-    const { results: conversations, status } = usePaginatedQuery(
+    const { results: conversations, status, loadMore } = usePaginatedQuery(
         api.direct_messages.get_conversations,
         {},
         { initialNumItems: 10 }
@@ -38,6 +39,16 @@ export default function Conversations_Page() {
                     </div>
                 </div>
             ))}
+            {(status === 'CanLoadMore' || status === 'LoadingMore') && (
+                <Button
+                    onClick={() => loadMore(10)}
+                    disabled={status === 'LoadingMore'}
+                    className="w-full"
+                >
+                    {status === 'LoadingMore' ? <Spinner /> : 'Load More'}
+                </Button>
+            )}
+            {status === 'Exhausted' && <p className="text-center text-gray-500">No more conversations</p>}
         </div>
     );
 }

@@ -114,20 +114,13 @@ export default function Search_Page() {
                             </div>
                         </Card>
                     ))}
-                    {status === 'CanLoadMore' && (
+                    {(status === 'CanLoadMore' || status === 'LoadingMore') && (
                         <Button
                             onClick={() => loadMore(10)}
+                            disabled={status === 'LoadingMore'}
                             className="w-full"
                         >
-                            Load More
-                        </Button>
-                    )}
-                    {status === 'LoadingMore' && (
-                        <Button
-                            disabled
-                            className="w-full"
-                        >
-                            <Spinner />
+                            {status === 'LoadingMore' ? <Spinner /> : 'Load More'}
                         </Button>
                     )}
                     {status === 'Exhausted' && <p className="text-center text-gray-500">No more results</p>}
