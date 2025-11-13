@@ -37,20 +37,16 @@ export function Img_Modal({ src, alt, toogle_modal, className = '' }: Img_Modal_
             onClick={(e) => {
                 e.stopPropagation();
                 e.nativeEvent.stopImmediatePropagation();
-                if(toogle_modal) toogle_modal();
+                if (toogle_modal) toogle_modal();
             }}
-            className="w-screen h-screen fixed bg-background/20 backdrop-blur-2xl left-0 top-0 flex items-center justify-center p-7 z-50"
+            className="w-screen h-screen fixed bg-background/20 backdrop-blur-2xl left-0 top-0 z-50"
         >
-            <div className={cn(`w-full`, className.split(' '))}>
-                <AspectRatio ratio={1 / 1} className="bg-muted rounded-2xl">
-                    <Image
-                        src={src ?? "https://github.com/shadcn.png"}
-                        alt={alt ?? 'p'}
-                        fill
-                        className="w-full object-fill rounded-2xl"
-                    />
-                </AspectRatio>
-            </div>
+            <Image
+                src={src ?? "https://github.com/shadcn.png"}
+                alt={alt ?? 'p'}
+                fill
+                className={cn(`w-full max-h-10/12 max-w-3xl object-contain rounded-2xl mx-auto my-auto`, className.split(' '))}
+            />
         </div>
     );
 }

@@ -16,32 +16,34 @@ export default function App_Layout({ children }: Props_Type_With_Children) {
     }, [pathname, full_screen_paths]);
 
     return (
-        <div className="w-screen h-screen flex flex-col">
-            {show_header_and_footer && (
-                <header className="p-4 border-b-2 flex flex-row justify-between items-center">
-                    Mwee
-                    <UserButton />
-                </header>
-            )}
-            <main className={cn("flex-1 w-full p-4 overflow-y-auto", !show_header_and_footer && "p-0")}>
-                {children}
-            </main>
-            {show_header_and_footer && (
-                <footer className="p-4 flex justify-between items-center border-t-2">
-                    <Icon_Button path="/">
-                        <House size={40} />
-                    </Icon_Button>
-                    <Icon_Button path="/search">
-                        <Search size={40} />
-                    </Icon_Button>
-                    <Icon_Button path="/chat">
-                        <MessageSquareHeart size={40} />
-                    </Icon_Button>
-                    <Icon_Button path="/profile">
-                        <User size={40}/>
-                    </Icon_Button>
-                </footer>
-            )}
+        <div className="w-screen h-screen">
+            <div className="w-full h-full max-w-3xl flex flex-col mx-auto">
+                {show_header_and_footer && (
+                    <header className="p-4 border-b-2 flex flex-row justify-between items-center">
+                        Mwee
+                        <UserButton />
+                    </header>
+                )}
+                <main className={cn("flex-1 w-full p-4 overflow-y-auto")}>
+                    {children}
+                </main>
+                {show_header_and_footer && (
+                    <footer className="p-4 flex justify-between items-center border-t-2">
+                        <Icon_Button path="/">
+                            <House size={40} />
+                        </Icon_Button>
+                        <Icon_Button path="/search">
+                            <Search size={40} />
+                        </Icon_Button>
+                        <Icon_Button path="/chat">
+                            <MessageSquareHeart size={40} />
+                        </Icon_Button>
+                        <Icon_Button path="/profile">
+                            <User size={40} />
+                        </Icon_Button>
+                    </footer>
+                )}
+            </div>
         </div>
     );
 }

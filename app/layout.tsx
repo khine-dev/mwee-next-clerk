@@ -20,7 +20,7 @@ export const metadata: Metadata = {
     title: "Mwee",
     description: "A minimal chat app by Khine",
     icons: {
-        icon: "/convex.svg",
+        icon: "/icon.svg",
     },
 };
 
